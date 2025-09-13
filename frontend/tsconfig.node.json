@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true
+    // "allowImportingTsExtensions" has been removed to fix the build error.
+  },
+  "include": ["vite.config.ts"]
+}
