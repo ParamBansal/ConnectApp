@@ -23,7 +23,7 @@ app.use(urlencoded({extended:true}));
 
 const corsOptions = {
   // https://connectapp-k6fs.onrender.com/
-    origin: process.env.URL, //  frontend
+    origin: 'https://connectapp-k6fs.onrender.com', //  frontend
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]

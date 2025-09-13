@@ -7,7 +7,7 @@ const server=http.createServer(app)
 
 const io=new Server(server,{
     cors:{
-        origin:process.env.URL,
+        origin:'https://connectapp-k6fs.onrender.com',
         methods:['GET','POST']
     }
 })
