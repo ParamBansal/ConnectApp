@@ -62,7 +62,7 @@ const Profile = () => {
                                 <p> <span className="font-semibold  ">{userProfile?.following.length} following</span></p>
                             </div>
                             <div className="flex flex-col gap-1">
-                                <span className="font-semibold">{userProfile.bio }</span>
+                                <span className="font-semibold">{userProfile?.bio||'bio here' }</span>
                                 <Badge className="w-fit" variant="secondary"><AtSign /><span className="pl-1">{userProfile?.username}</span></Badge>
                                 {/* <span>Connect with your favourite ones here</span> */}
                             </div>

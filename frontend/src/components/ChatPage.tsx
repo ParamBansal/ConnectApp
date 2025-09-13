@@ -8,7 +8,7 @@ import { Button } from './ui/button.tsx';
 import {  MessageCircleCode } from 'lucide-react';
 import Messages from './Messages.tsx';
 import axios from 'axios';
-import { setMessages } from '@/redux/chatSlice.ts';
+import { addMessage } from '@/redux/chatSlice.ts';
 
 
 const ChatPage = () => {
@@ -17,7 +17,7 @@ const ChatPage = () => {
     const { user, selectedUser } = useSelector((store: any) => store.auth);
     const { suggestedUsers } = useSelector((store: any) => store.auth);
     const {onlineUsers}=useSelector((store:any)=>store.chat)
-    const {messages}=useSelector((store:any)=>store.chat)
+    // const {messages}=useSelector((store:any)=>store.chat)
     const setSelectHandler = (user:any) => {
         if ((selectedUser) && (selectedUser == user)) {
             dispatch(setSelectedUser(null));
@@ -36,7 +36,8 @@ const ChatPage = () => {
             })
             if(res.data.success){
                 console.log("message sent")
-                dispatch(setMessages([...messages, res.data.newMessage]));
+                // dispatch(setMessages([...messages, res.data.newMessage]));
+                dispatch(addMessage(res.data.newMessage));
                 console.log("message dispatched")
 
 
