@@ -35,6 +35,7 @@ export const register = async (req, res) => {
     }
 }
 export const login = async (req, res) => {
+    console.log("login hit")
     try {
         const { email, password } = req.body;
         if (!email || !password) {
