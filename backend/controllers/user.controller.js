@@ -52,7 +52,7 @@ export const login = async (req, res) => {
                 success: false,
             });
         }
-        
+
         const isPasswordMatch = await bcrypt.compare(password, user.password);
         if (!isPasswordMatch) {
             return res.status(401).json({
@@ -81,7 +81,7 @@ export const login = async (req, res) => {
             posts: populatedUser.posts,
             bookmarks: populatedUser.bookmarks
         };
-        
+
         const cookieOptions = {
             maxAge: 1 * 24 * 60 * 60 * 1000,
             httpOnly: true,
@@ -119,7 +119,7 @@ export const logout = async (_, res) => {
 export const getProfile = async (req, res) => {
     try {
         const userId = req.params.id;
-        let user = await User.findById(userId).populate({path:'posts', createdAt:-1}).populate('bookmarks');
+        let user = await User.findById(userId).populate({ path: 'posts', createdAt: -1 }).populate('bookmarks');
         return res.status(200).json({
             user,
             success: true
@@ -130,6 +130,10 @@ export const getProfile = async (req, res) => {
 };
 
 export const editProfile = async (req, res) => {
+    console.log("🎯 editProfile hit");
+    console.log("req.id:", req.id);
+    console.log("req.body:", req.body);
+    console.log("req.file:", req.file ? req.file.originalname : null);
     try {
         const userId = req.id;
         const { bio, gender } = req.body;
