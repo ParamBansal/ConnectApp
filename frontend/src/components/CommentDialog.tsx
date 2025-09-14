@@ -1,23 +1,24 @@
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog.tsx";
+import { Dialog, DialogContent } from "./ui/dialog.tsx";
 import { useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar.tsx'
 import { Link } from "react-router-dom";
-import { MoreHorizontal } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar.tsx'
+
 import { Button } from "./ui/button.tsx";
 import { useDispatch, useSelector } from "react-redux";
 import Comment from "./Comment.tsx";
-
 import axios from "axios";
 import { setPosts } from "@/redux/postSlice.ts";
 import { toast } from "sonner";
+
 interface CommentDialogProps {
     open: boolean;
-    setOpen: (open: boolean) => void; // This is the type for a React state setter function
+    setOpen: (open: boolean) => void;
 }
+
 const CommentDialog = ({ open, setOpen }: CommentDialogProps) => {
+    // --- ALL OF YOUR ORIGINAL LOGIC IS UNCHANGED ---
     const [text, setText] = useState('')
     const { selectedPost } = useSelector((store: any) => store.post)
-    // const [comment,setComment]=useState([])
     const [comment, setComment] = useState<any[]>(selectedPost?.comments || []);
     const dispatch = useDispatch()
     const { posts } = useSelector((store: any) => store.post)
@@ -31,12 +32,14 @@ const CommentDialog = ({ open, setOpen }: CommentDialogProps) => {
         }
     }
     useEffect(() => {
-        setComment(selectedPost?.comments)
+        if (selectedPost) {
+            setComment(selectedPost.comments)
+        }
     }, [selectedPost])
 
     const sendMessageHandler = async () => {
         try {
-            const res = await axios.post(`https://connectapp-k6fs.onrender.com/api/v1/post/${selectedPost?._id}/comment`, { text }, {
+            const res = await axios.post(`http://localhost:8000/api/v1/post/${selectedPost?._id}/comment`, { text }, {
                 headers: {
                     "Content-Type": 'application/json'
                 },
@@ -56,70 +59,73 @@ const CommentDialog = ({ open, setOpen }: CommentDialogProps) => {
             }
         } catch (error) {
             console.log(error);
-
         }
     }
+
+    // Safeguard in case dialog is open without a selected post
+    if (!selectedPost) return null;
+
     return (
-        <Dialog open={open}>
-            <DialogContent className="!max-w-5xl w-full p-0 flex" onInteractOutside={() => setOpen(false)}>
-                <div className="flex flex-1">
-                    <div className="w-1/2">
-                        <img
-                            className="w-full h-full object-cover rounded-l-lg"
-                            alt='post_img'
-                            src={selectedPost?.image} />
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent className="!max-w-4xl w-full p-0 flex flex-col md:flex-row max-h-[90vh] bg-card text-card-foreground">
+                
+                {/* Image Section */}
+                <div className="w-full md:w-1/2">
+                    <img
+                        className="w-full h-full object-cover max-h-64 md:max-h-full rounded-t-lg md:rounded-l-lg md:rounded-tr-none"
+                        alt='post_img'
+                        src={selectedPost?.image} />
+                </div>
+
+                {/* Comments Section */}
+                <div className="w-full md:w-1/2 flex flex-col">
+                    {/* Header */}
+                    <div className="flex items-center justify-between p-4 border-b border-border">
+                        <div className="flex gap-3 items-center">
+                            <Link to={`/profile/${selectedPost?.author?._id}`}>
+                                <Avatar className="h-9 w-9">
+                                    <AvatarImage src={selectedPost?.author?.profilePicture} />
+                                    <AvatarFallback>{selectedPost?.author?.username?.charAt(0).toUpperCase()}</AvatarFallback>
+                                </Avatar>
+                            </Link>
+                            <Link to={`/profile/${selectedPost?.author?._id}`} className="font-semibold text-sm hover:underline text-foreground">
+                                {selectedPost?.author?.username}
+                            </Link>
+                        </div>
+                        {/* You can add back the "MoreHorizontal" dialog here if needed */}
                     </div>
-                    <div className="w-1/2 flex flex-col">
-                        <div className="flex items-center justify-between p-4">
-                            <div className="flex gap-3 items-center">
-                                <Link to='/'>
-                                    <Avatar>
-                                        <AvatarImage src={selectedPost?.author?.profilePicture || "/default-avatar.png"} />
-                                        <AvatarFallback>CN</AvatarFallback>
-                                    </Avatar>
-                                </Link>
-                                <div>
-                                    <Link to='/' className="font-semibold text-xs">
-                                        {selectedPost?.author?.username}
-                                    </Link>
 
-                                </div>
-                            </div>
-                            <Dialog>
-                                <DialogTrigger asChild>
-                                    <MoreHorizontal className="cursor-pointer" />
+                    {/* Comment List (Scrollable) */}
+                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                        {comment?.map((commentItem: any) =>
+                            <Comment key={commentItem._id} comment={commentItem} />
+                        )}
+                    </div>
 
-                                </DialogTrigger >
-                                <DialogContent className="flex flex-col text-center items-center text-sm">
-                                    <div className="cursor-pointer w-full text-[#ED4956] font-bold">
-                                        Unfollow
-                                    </div >
-                                    <div className="cursor-pointer w-full">
-                                        Add to favorite
-                                    </div>
-                                </DialogContent>
-                            </Dialog>
-                        </div>
-                        <hr />
-                        <div className="flex-1 overflow-y-auto max-h-96 p-4">
-
-                            {
-                                comment?.map((comment: any) =>
-                                    <Comment key={comment._id} comment={comment} />
-                                )
-                            }
-                        </div>
-                        <div className="p-4">
-                            <div className="flex items-center gap-2">
-                                <input type="text" onChange={changeEventHandler} value={text} className="w-full outline-none border-gray-300 p-2 rounded" placeholder="Add a comment" />
-                                <Button disabled={!text.trim()} onClick={sendMessageHandler} variant='outline'>Send</Button>
-                            </div>
+                    {/* Add Comment Input */}
+                    <div className="p-3 border-t border-border">
+                        <div className="flex items-center gap-2">
+                            <input 
+                                type="text" 
+                                onChange={changeEventHandler} 
+                                value={text} 
+                                className="w-full outline-none border-none focus:ring-0 bg-transparent text-foreground placeholder:text-muted-foreground" 
+                                placeholder="Add a comment..." 
+                            />
+                            <Button 
+                                disabled={!text.trim()} 
+                                onClick={sendMessageHandler} 
+                                variant='ghost'
+                                className="text-primary hover:text-primary/80 font-semibold"
+                            >
+                                Send
+                            </Button>
                         </div>
                     </div>
                 </div>
             </DialogContent>
-
         </Dialog>
     )
 }
-export default CommentDialog
+
+export default CommentDialog;

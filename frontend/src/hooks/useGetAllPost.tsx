@@ -10,7 +10,7 @@ const useGetAllPost = () => {
     const fetchAllPost = async () => {
       try {
         const res = await axios.get(
-          "https://connectapp-k6fs.onrender.com/api/v1/post/all",
+          "http://localhost:8000/api/v1/post/all",
           { withCredentials: true }
         );
         console.log("receive", res);

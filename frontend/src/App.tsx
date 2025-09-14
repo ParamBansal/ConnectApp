@@ -7,6 +7,7 @@ import Signup from './components/Signup.tsx'
 import Profile from './components/Profile.tsx'
 
 
+
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import EditProfile from './components/EditProfile.tsx'
 import ChatPage from './components/ChatPage.tsx'
@@ -51,7 +52,7 @@ function App() {
   const dispatch=useDispatch();
   useEffect(() => {
     if (user) {
-      const socketio = io('https://connectapp-k6fs.onrender.com/', {
+      const socketio = io('http://localhost:8000/', {
         query: {
           userId: user?._id
         },
@@ -79,6 +80,7 @@ function App() {
 
   return (
     <>
+    
 
       <RouterProvider router={browserRouter} />
     </>

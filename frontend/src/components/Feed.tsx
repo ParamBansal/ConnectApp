@@ -1,12 +1,12 @@
-
 import Posts from "./Posts.tsx";
 
-const Feed=()=>{
+const Feed = () => {
     return (
-        <div className="flex-1 my-8 flex flex-col items-center pl-[20%]">
-            <Posts/>
+        // The container is now simplified. 'w-full' ensures it fills the space provided by the Home component.
+        <div className="w-full flex flex-col items-center">
+            <Posts />
         </div>
-    )
+    );
 }
 
-export default Feed
+export default Feed;

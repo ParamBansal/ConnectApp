@@ -10,7 +10,7 @@ const useGetAllMessage = () => {
     const fetchAllMessage = async () => {
       try {
         const res = await axios.get(
-          `https://connectapp-k6fs.onrender.com/api/v1/message/all/${selectedUser?._id}`,
+          `http://localhost:8000/api/v1/message/all/${selectedUser?._id}`,
           { withCredentials: true }
         );
         console.log("receive", res);

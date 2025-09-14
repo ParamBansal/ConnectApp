@@ -11,7 +11,7 @@ const useGetUserProfile = (userId:any) => {
     
         try {
         const res = await axios.get(
-          `https://connectapp-k6fs.onrender.com/api/v1/user/${userId}/profile`,
+          `http://localhost:8000/api/v1/user/${userId}/profile`,
           { withCredentials: true }
         );
         console.log("Suggested Users",res.data.user)
