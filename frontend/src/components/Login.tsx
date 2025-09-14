@@ -28,7 +28,7 @@ const Login = () => {
         e.preventDefault();
         try {
             setLoading(true);
-            const res = await axios.post('https://connectapp-k6fs.onrender.com/login/api/v1/user/login', input, {
+            const res = await axios.post('https://connectapp-k6fs.onrender.com/api/v1/user/login', input, {
                 headers: {
                     "Content-Type": 'application/json'
                 },

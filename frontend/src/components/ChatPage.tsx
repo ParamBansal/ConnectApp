@@ -28,7 +28,7 @@ const ChatPage = () => {
     const sendMessageHandler = async (receiverId: any) => {
         if (!textMessage.trim()) return;
         try {
-            const res = await axios.post(`https://connectapp-k6fs.onrender.com/login/api/v1/message/send/${receiverId}`, { textMessage }, {
+            const res = await axios.post(`https://connectapp-k6fs.onrender.com/api/v1/message/send/${receiverId}`, { textMessage }, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });

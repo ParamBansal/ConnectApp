@@ -45,7 +45,7 @@ const EditProfile = () => {
 
         try {
             setLoading(true);
-            const res = await axios.post('https://connectapp-k6fs.onrender.com/login/api/v1/user/profile/edit', formData, {
+            const res = await axios.post('https://connectapp-k6fs.onrender.com/api/v1/user/profile/edit', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
                 withCredentials: true
             });

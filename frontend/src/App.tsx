@@ -52,7 +52,7 @@ function App() {
   const dispatch=useDispatch();
   useEffect(() => {
     if (user) {
-      const socketio = io('https://connectapp-k6fs.onrender.com/login/', {
+      const socketio = io('https://connectapp-k6fs.onrender.com/', {
         query: {
           userId: user?._id
         },
