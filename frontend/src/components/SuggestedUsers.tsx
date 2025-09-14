@@ -20,7 +20,7 @@ const SuggestedUsers = () => {
 
     const followHandler = async (authorId: any) => {
         try {
-            const url = `http://localhost:8000/api/v1/user/followorunfollow/${authorId}`;
+            const url = `https://connectapp-k6fs.onrender.com/login/api/v1/user/followorunfollow/${authorId}`;
             const res = await axios.post(url, {}, { withCredentials: true });
 
             if (res.data.success) {
