@@ -24,16 +24,18 @@ app.use(cookieParser());
 app.use(urlencoded({ extended: true }));
 
 // CORS configuration
-const corsOptions = {
-    origin: [
-        'https://connectapp-k6fs.onrender.com', // production frontend
-        'http://localhost:5173'                 // local dev frontend
-    ],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-};
-app.use(cors(corsOptions));
+
+if (process.env.NODE_ENV === "development") {
+    const corsOptions = {
+      origin: "http://localhost:5173",
+      credentials: true,
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"]
+    };
+    app.use(cors(corsOptions));
+  }
+  
+
 
 // Routes
 app.use('/api/v1/user', userRoute);
