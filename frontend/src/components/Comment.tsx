@@ -1,6 +1,6 @@
 
 import { Avatar,AvatarFallback,AvatarImage } from "./ui/avatar.tsx";
-const Comment=(comment:any)=>{
+const Comment=({comment}:any)=>{
    
     return (
         

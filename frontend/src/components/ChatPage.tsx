@@ -65,7 +65,7 @@ const ChatPage = () => {
                             return (
                                 <div onClick={() => setSelectHandler(suggestedUser)} className={`flex gap-3 items-center p-3 hover:bg-gray-300 cursor-pointer ${suggestedUser == selectedUser && 'bg-gray-200'}`}>
                                     <Avatar className='h-14 w-14 overflow-hidden'>
-                                        <AvatarImage className='object-top rounded-full h-full w-full object-cover  border-2 border-white' src={suggestedUser?.profilePicture} alt='profile' />
+                                        <AvatarImage className='object-top rounded-full h-full w-full object-cover  border-2 border-white' src={suggestedUser?.profilePicture|| "/default-avatar.png"} alt='profile' />
 
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
@@ -89,7 +89,7 @@ const ChatPage = () => {
                     <section className='flex-1 border-l border-l-gray-300 flex flex-col h-full'>
                         <div className='flex gap-3 items-center px-3 py-2 border-b border-gray-300 stiicky top-0 bg-white z-10'>
                             <Avatar className='h-12 w-12 overflow-hidden'>
-                                <AvatarImage className='object-top rounded-full h-full w-full object-cover  border-2 border-white' src={selectedUser?.profilePicture} alt='profile' />
+                                <AvatarImage className='object-top rounded-full h-full w-full object-cover  border-2 border-white' src={selectedUser?.profilePicture|| "/default-avatar.png"} alt='profile' />
 
                                 <AvatarFallback>CN</AvatarFallback>
                             </Avatar>

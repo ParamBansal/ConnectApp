@@ -1,7 +1,7 @@
-import  {  useState } from "react";
+import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar.tsx'
 import { Dialog, DialogTrigger, DialogContent } from './ui/dialog.tsx'
-import {  MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { Button } from './ui/button.tsx'
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { MessageCircle, Bookmark } from "lucide-react";
@@ -13,13 +13,13 @@ import { setPosts, setSelectedPost } from "@/redux/postSlice.ts";
 import { Badge } from "./ui/badge.tsx";
 import { setFollowing } from "@/redux/authSlice.ts";
 
-interface PostProps{
-    post:any
+interface PostProps {
+    post: any
 }
-const Post = ({ post }:PostProps) => {
+const Post = ({ post }: PostProps) => {
     const [text, setText] = useState("");
     const [open, setOpen] = useState(false)
-    const changeEventHandler = (e:any) => {
+    const changeEventHandler = (e: any) => {
         const inputText = e.target.value;
         if (inputText.trim()) {
             setText(inputText)
@@ -46,7 +46,7 @@ const Post = ({ post }:PostProps) => {
                 // No more filtering or spreading! Just set the new array from the backend.
                 dispatch(setFollowing(res.data.following));
             }
-        } catch (error:any) {
+        } catch (error: any) {
             console.error("Follow/Unfollow failed:", error);
             toast.error(error.response?.data?.message || "An error occurred.");
         }
@@ -100,7 +100,7 @@ const Post = ({ post }:PostProps) => {
                 console.log("deleted")
                 toast.success(res.data.message)
             }
-        } catch (error:any) {
+        } catch (error: any) {
             console.log("error in deletion");
 
             console.log(error);
@@ -117,12 +117,12 @@ const Post = ({ post }:PostProps) => {
             if (res.data.success) {
                 const updatedLikes = liked ? postLike - 1 : postLike + 1;
                 setPostLike(updatedLikes)
-                const updatedPostData = posts.map((p:any) => {
+                const updatedPostData = posts.map((p: any) => {
                     if (p._id === post._id) {
                         return {
                             ...p,
                             likes: liked
-                                ? p.likes.filter((id:any) => id !== user._id)
+                                ? p.likes.filter((id: any) => id !== user._id)
                                 : [...p.likes, user._id]
                         };
                     }
@@ -134,7 +134,7 @@ const Post = ({ post }:PostProps) => {
                 toast.success(res.data.message);
 
             }
-        } catch (error:any) {
+        } catch (error: any) {
             console.log(error);
 
             toast.error(error.response.data.message)
@@ -145,7 +145,7 @@ const Post = ({ post }:PostProps) => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <Avatar>
-                        <AvatarImage src={post.author?.profilePicture} alt='post_image' />
+                        <AvatarImage src={post?.author?.profilePicture || "/default-avatar.png"} />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <div className="flex items-center gap-3">
@@ -160,7 +160,7 @@ const Post = ({ post }:PostProps) => {
                     <DialogContent className="flex flex-col items-center text-sm text-center ">
                         {
                             post?.author?._id != user?._id && <Button onClick={followHandler} variant='ghost' className={`cursor-pointer w-fit ${following?.includes(post?.author?._id) ? 'text-[#ED4956]' : 'text-green-600'} font-bold`}>
-{following?.includes(post?.author?._id) ? 'Unfollow' : 'Follow'}</Button>
+                                {following?.includes(post?.author?._id) ? 'Unfollow' : 'Follow'}</Button>
 
                         }
                         <Button onClick={bookmarkHandler} variant='ghost' className="cursor-pointer w-fit ">Add To favorites</Button>
@@ -185,7 +185,7 @@ const Post = ({ post }:PostProps) => {
                     <MessageCircle onClick={() => { dispatch(setSelectedPost(post)); setOpen(true) }} className="cursor-pointer hover:text-gray-600" />
                     {/* <Send className="cursor-pointer hover:text-gray-600" /> */}
                 </div>
-                <Bookmark  onClick={bookmarkHandler} className="cursor-pointer hover:bg-amber-200" />
+                <Bookmark onClick={bookmarkHandler} className="cursor-pointer hover:bg-amber-200" />
             </div>
             <span className="font-medium block mb-2">{postLike} likes</span>
             <p >
