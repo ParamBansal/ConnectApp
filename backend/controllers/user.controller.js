@@ -44,6 +44,7 @@ export const login = async (req, res) => {
                 success: false,
             });
         }
+
         let user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({
@@ -51,6 +52,7 @@ export const login = async (req, res) => {
                 success: false,
             });
         }
+        
         const isPasswordMatch = await bcrypt.compare(password, user.password);
         if (!isPasswordMatch) {
             return res.status(401).json({
@@ -59,41 +61,53 @@ export const login = async (req, res) => {
             });
         };
 
-        const token = await jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '1d' });
+        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '1d' });
 
-        // populate each post if in the posts array
-        const populatedPosts = await Promise.all(
-            user.posts.map( async (postId) => {
-                const post = await Post.findById(postId);
-                if(post.author.equals(user._id)){
-                    return post;
-                }
-                return null;
-            })
-        )
-        user = {
-            _id: user._id,
-            username: user.username,
-            email: user.email,
-            profilePicture: user.profilePicture,
-            bio: user.bio,
-            followers: user.followers,
-            following: user.following,
-            posts: populatedPosts
-        }
-        return res.cookie('token', token, { httpOnly: true, sameSite: 'strict', maxAge: 1 * 24 * 60 * 60 * 1000 }).json({
-            message: `Welcome back ${user.username}`,
+        // --- IMPROVEMENT: Use Mongoose .populate() for efficiency ---
+        const populatedUser = await User.findById(user._id)
+            .populate('posts')
+            .populate('bookmarks')
+            .select('-password');
+
+        // Create the user object for the response
+        const userToSend = {
+            _id: populatedUser._id,
+            username: populatedUser.username,
+            email: populatedUser.email,
+            profilePicture: populatedUser.profilePicture,
+            bio: populatedUser.bio,
+            followers: populatedUser.followers,
+            following: populatedUser.following,
+            posts: populatedUser.posts,
+            bookmarks: populatedUser.bookmarks
+        };
+        
+        const cookieOptions = {
+            maxAge: 1 * 24 * 60 * 60 * 1000,
+            httpOnly: true,
+            secure: true, // <-- ADD THIS
+            sameSite: 'none' // <-- CHANGE THIS
+        };
+
+        return res.cookie('token', token, cookieOptions).json({
+            message: `Welcome back ${userToSend.username}`,
             success: true,
-            user
+            user: userToSend
         });
 
     } catch (error) {
         console.log(error);
+        return res.status(500).json({ message: "Internal server error.", success: false });
     }
 };
 export const logout = async (_, res) => {
     try {
-        return res.cookie("token", "", { maxAge: 0 }).json({
+        return res.cookie("token", "", {
+            maxAge: 0,
+            httpOnly: true,
+            secure: true,
+            sameSite: "none"
+        }).json({
             message: 'Logged out successfully.',
             success: true
         });
@@ -101,6 +115,7 @@ export const logout = async (_, res) => {
         console.log(error);
     }
 };
+
 export const getProfile = async (req, res) => {
     try {
         const userId = req.params.id;
