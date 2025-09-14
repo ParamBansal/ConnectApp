@@ -14,9 +14,9 @@ const useGetUserProfile = (userId:any) => {
           `https://connectapp-k6fs.onrender.com/api/v1/user/${userId}/profile`,
           { withCredentials: true }
         );
-        console.log("Suggested Users",res.data.user)
+
         if (res.data.success) {
-          console.log("received user profile")
+
           dispatch(setUserProfile(res.data.user));
         }
       } catch (error) {

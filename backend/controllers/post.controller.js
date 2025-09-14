@@ -50,7 +50,7 @@ export const getAllPost=async(req,res)=>{
     
     
     try {
-        console.log("getting all posts")
+
         const post=await Post.find().sort({createdAt:-1}).populate({
             path:'author',select:'username profilePicture'
         } ).populate({

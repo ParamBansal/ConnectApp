@@ -13,7 +13,7 @@ const useGetAllMessage = () => {
           `https://connectapp-k6fs.onrender.com/api/v1/message/all/${selectedUser?._id}`,
           { withCredentials: true }
         );
-        console.log("receive", res);
+      
         if (res.data.success) {
           dispatch(setMessages(res.data.messages));
         }

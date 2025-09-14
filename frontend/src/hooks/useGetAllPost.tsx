@@ -13,7 +13,7 @@ const useGetAllPost = () => {
           "https://connectapp-k6fs.onrender.com/api/v1/post/all",
           { withCredentials: true }
         );
-        console.log("receive", res);
+
         if (res.data.success) {
           dispatch(setPosts(res.data.post));
         }

@@ -13,7 +13,7 @@ const useGetSuggestedUsers = () => {
           "https://connectapp-k6fs.onrender.com/api/v1/user/suggested",
           { withCredentials: true }
         );
-        console.log("Suggested Users",res.data.users)
+
         if (res.data.success) {
           dispatch(setSuggestedUsers(res.data.users));
         }

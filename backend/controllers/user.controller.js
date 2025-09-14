@@ -35,7 +35,7 @@ export const register = async (req, res) => {
     }
 }
 export const login = async (req, res) => {
-    console.log("login hit")
+  
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -130,10 +130,7 @@ export const getProfile = async (req, res) => {
 };
 
 export const editProfile = async (req, res) => {
-    console.log("🎯 editProfile hit");
-    console.log("req.id:", req.id);
-    console.log("req.body:", req.body);
-    console.log("req.file:", req.file ? req.file.originalname : null);
+    
     try {
         const userId = req.id;
         const { bio, gender } = req.body;
