@@ -5,13 +5,17 @@ const app=express();
 
 const server=http.createServer(app)
 
-const io=new Server(server,{
-    cors:{
-        origin:'https://connectapp-k6fs.onrender.com',
-        methods:['GET','POST']
+// New, corrected code for socket/socket.js
+const io = new Server(server, {
+    cors: {
+        origin: [
+            'https://connectapp-k6fs.onrender.com', // Deployed Frontend
+            'http://localhost:5173'               // Local Development Frontend
+        ],
+        methods: ['GET', 'POST'],
+        credentials: true
     }
-})
-
+});
 const userSocketMap={};//this map stores socket ids corresponding the user id; userId->socketId
 export const getReceiverSocketId=(receiverId)=>userSocketMap[receiverId];
 
