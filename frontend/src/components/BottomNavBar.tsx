@@ -90,6 +90,7 @@ const BottomNavBar = () => {
                                     className="justify-start text-red-600"
                                     onClick={handleLogout}
                                 >
+                                     <LogOut size={16} />
                                     Logout
                                 </Button>
                             </div>
